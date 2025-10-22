@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <title>Dice</title>
+    <!-- Botstrap -->
+    <link rel="stylesheet" href="./assets/css/bootstrap/bootstrap.min.css" />
+    <!-- Font -->
+    <link rel="stylesheet" href="./assets/css/font.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/font/fontawesome-free-5.15.4-web/css/all.min.css"
+    />
+    <!-- Custom -->
+    <link rel="stylesheet" href="./assets/css/index.css" />
+  </head>
+  <body
+    class="d-flex justify-content-end justify-content-lg-between flex-column-reverse flex-lg-row"
+  >
+    <!-- History Sidebar -->
+    <div class="history1 m-hide" id="m-con-history">
+      <div class="d-flex justify-content-between align-items-center d-lg-none">
+        <h3>History</h3>
+        <i
+          class="fa fa-window-close coloseIconHistory"
+          onclick="HideHistory()"
+        ></i>
+      </div>
+      <h3 class="d-none d-lg-flex">History</h3>
+      <div id="historyList"></div>
+    </div>
+
+    <section class="m-con">
+      <div
+        class="container d-flex justify-content-between flex-column flex-lg-row"
+      >
+        <div class="panel">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="m-0">Balance:</h3>
+            <div class="balance">$<span id="balance">1000.00</span></div>
+          </div>
+
+          <div class="input-group d-flex flex-column justify-content-start">
+            <label for="multiplier" class="form-label">Bet Amount:</label>
+
+            <input
+              type="number"
+              id="betAmount"
+              value="0"
+              min="0.01"
+              step="0.01"
+            />
+          </div>
+
+          <div class="btn-group mt-2">
+            <button id="halfBtn" class="mr-1">½</button>
+            <button id="doubleBtn" class="ml-1">2×</button>
+          </div>
+          <p
+            id="error"
+            style="color: #dc2626; font-size: 12px; margin-top: 5px"
+          ></p>
+          <button class="bet-btn" id="betBtn">Bet</button>
+        </div>
+
+        <div
+          class="panel d-flex flex-column justify-content-between position-relative"
+        >
+          <div id="resultMsg" class="result-msg"></div>
+
+          <div>
+            <div class="history" id="history"></div>
+
+            <div class="stats">
+              <div>
+                <span>Multiplier</span>
+                <strong id="multiplier">2x</strong>
+              </div>
+              <div>
+                <span>Roll Over</span>
+                <strong id="rollOver">50</strong>
+              </div>
+              <div>
+                <span>Win Chance</span>
+                <strong id="winChance">50%</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-100 p-3 m-con-slider mt-5 mt-lg-0">
+            <div class="slider-container">
+              <input type="range" id="slider" min="0" max="100" value="50" />
+              <div class="hex" id="hexResult">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Btn History -->
+    <button onclick="ShowHistory()" class="d-lg-none openIconHistory">
+      <i class="fa fa-history"></i>
+    </button>
+
+    <div
+      class="modal fade show"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="history m-0 p-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3>History</h3>
+            <button
+              type="button"
+              class="close m-0 p-0"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="historyList"></div>
+        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <audio id="winSound" src="./assets/track/win.mp3" preload="auto"></audio>
+    <audio
+      id="m-click"
+      src="./assets/track/default-click.mp3"
+      preload="auto"
+    ></audio>
+    <audio id="role" src="./assets/track/roll.mp3" preload="auto"></audio>
+    <audio id="tickSound" src="./assets/track/drag.mp3" preload="auto"></audio>
+
+    <audio
+      id="bg-music"
+      src="./assets/track/music.mp3"
+      loop
+      autoplay
+      preload="auto"
+    ></audio>
+    <!-- bg sound play -->
+
+    <script>
+      const music = document.getElementById("bg-music");
+      music.volume = 1;
+
+      function enableSound() {
+        music.muted = false;
+        music.play();
+        window.removeEventListener("click", enableSound);
+        window.removeEventListener("keydown", enableSound);
+      }
+      window.addEventListener("click", enableSound);
+      window.addEventListener("keydown", enableSound);
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          music.play().catch(() => {});
+        } else {
+          music.pause();
+        }
+      });
+    </script>
+
+    <script src="./assets/js/index.js"></script>
+  </body>
+</html>
